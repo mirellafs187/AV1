@@ -1,0 +1,49 @@
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.sublime-project
+.sublime-workspace
+
+# Dependencies (if added in future)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build & Dist
+dist/
+build/
+*.min.js
+*.min.css
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Cache
+.cache/
+.parcel-cache
+.next/
+.nuxt/
+out/
+
+# Misc
+*.log
+.turbo
