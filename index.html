@@ -1,0 +1,667 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>LingvaAI — Aprenda inglês conversando com IA</title>
+<meta name="description" content="Plataforma de inglês com IA para brasileiros. Conversação, pronúncia e gamificação. 1º dia grátis." />
+<meta property="og:title"       content="LingvaAI — Aprenda inglês conversando com IA" />
+<meta property="og:description" content="Plataforma de inglês com IA para brasileiros. Conversação, pronúncia e gamificação. 1º dia grátis." />
+<meta property="og:type"        content="website" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@0.417.0/dist/umd/lucide.min.js"></script>
+
+<style>
+:root {
+  --bg:#15121e; --fg:#f7f5fb; --muted:#a59fb5; --card:#1f1b2c;
+  --border:rgba(255,255,255,.10); --primary:#b061ff; --primary-glow:#d29bff; --accent:#d9ff4d;
+  --grad-text:linear-gradient(120deg,#d29bff,#e6ff85);
+  --grad-primary:linear-gradient(135deg,#b061ff,#d29bff);
+  --grad-accent:linear-gradient(135deg,#d9ff4d,#a8e84a);
+  --grad-hero:radial-gradient(at 20% 20%,rgba(176,97,255,.45),transparent 55%),
+              radial-gradient(at 80% 30%,rgba(217,255,77,.18),transparent 55%),
+              radial-gradient(at 50% 90%,rgba(95,46,176,.4),transparent 60%);
+  --shadow-glow:0 20px 60px -20px rgba(176,97,255,.55);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{background:var(--bg);color:var(--fg);font-family:'Inter',ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:'Sora',sans-serif;letter-spacing:-.02em}
+img{display:block;max-width:100%}
+
+.glass{background:rgba(255,255,255,.04);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--border)}
+.text-gradient{background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent}
+.bg-grad-primary{background-image:var(--grad-primary)}
+.bg-grad-accent{background-image:var(--grad-accent)}
+.bg-hero{background-image:var(--grad-hero)}
+.shadow-glow{box-shadow:var(--shadow-glow)}
+.smooth{transition:all .3s cubic-bezier(.4,0,.2,1)}
+.hover-glass:hover{background:rgba(255,255,255,.08)}
+
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.animate-float{animation:float 6s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(176,97,255,.5)}50%{box-shadow:0 0 0 16px rgba(176,97,255,0)}}
+.animate-pulse-glow{animation:pulseGlow 2.5s ease-out infinite}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.animate-fadeIn{animation:fadeIn .4s ease both}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.animate-bounce{animation:bounce 1s ease-in-out infinite}
+
+/* ── Avatar drop zone ── */
+#avatarDropZone{
+  border:2px dashed var(--border);border-radius:1rem;cursor:pointer;
+  transition:border-color .25s,background .25s;position:relative;
+  overflow:hidden;min-height:260px;display:flex;align-items:center;justify-content:center;
+}
+#avatarDropZone:hover,#avatarDropZone.drag-over{border-color:var(--primary);background:rgba(176,97,255,.07)}
+#avatarDropZone input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+#avatarPreviewContainer{position:relative;width:100%;aspect-ratio:1/1}
+#avatarPreviewImg{width:100%;height:100%;object-fit:cover;border-radius:calc(1rem - 2px)}
+.avatar-ring{border:3px solid var(--primary);box-shadow:0 0 0 3px rgba(176,97,255,.25),var(--shadow-glow);border-radius:1rem}
+.avatar-badge-overlay{
+  position:absolute;bottom:-12px;right:-12px;
+  background:rgba(21,18,30,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1px solid var(--border);border-radius:.75rem;
+  padding:.5rem .75rem;display:flex;align-items:center;gap:.4rem;font-size:.75rem;white-space:nowrap;
+}
+
+/* ── Chat bubbles ── */
+.chat-bubble{max-width:82%;padding:.6rem .9rem;border-radius:1rem;font-size:.82rem;line-height:1.45;animation:fadeIn .35s ease both}
+.chat-bubble.bot{background:rgba(176,97,255,.18);border:1px solid rgba(176,97,255,.25);align-self:flex-start}
+.chat-bubble.user{background:rgba(255,255,255,.07);border:1px solid var(--border);align-self:flex-end}
+#chatMessages,#modalChatMessages{display:flex;flex-direction:column;gap:.6rem}
+
+/* ── Modal ── */
+#avatarModal{
+  display:none;position:fixed;inset:0;z-index:100;
+  background:rgba(0,0,0,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;padding:1rem;
+}
+#avatarModal.open{display:flex}
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- ═══════════ NAVBAR ═══════════ -->
+<header class="fixed top-0 inset-x-0 z-50">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <nav class="mt-4 flex items-center justify-between rounded-2xl glass px-4 py-3">
+      <a href="#" class="flex items-center gap-2">
+        <div class="grid h-9 w-9 place-items-center rounded-xl bg-grad-primary shadow-glow">
+          <i data-lucide="sparkles" class="h-5 w-5 text-white"></i>
+        </div>
+        <span style="font-family:'Sora',sans-serif" class="text-lg font-bold">Lingva<span class="text-gradient">AI</span></span>
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-sm" style="color:var(--muted)">
+        <a href="#features"  class="hover:text-white smooth" data-t="nav.features"></a>
+        <a href="#scenarios" class="hover:text-white smooth" data-t="nav.scenarios"></a>
+        <a href="#avatar"    class="hover:text-white smooth" data-t="nav.avatar"></a>
+        <a href="#pricing"   class="hover:text-white smooth" data-t="nav.pricing"></a>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="toggleLang()"
+          class="inline-flex items-center gap-1.5 rounded-full glass px-3 py-1.5 text-xs font-semibold smooth hover-glass"
+          style="color:var(--muted)" aria-label="Toggle language">
+          <i data-lucide="languages" class="h-3.5 w-3.5"></i><span id="langLabel">PT</span>
+        </button>
+        <a href="#pricing"
+          class="hidden sm:inline-flex rounded-md bg-grad-primary px-3.5 py-2 text-sm font-semibold text-white shadow-glow smooth hover:opacity-90"
+          data-t="nav.signup"></a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="relative overflow-hidden pt-32 pb-24 sm:pt-40 sm:pb-32">
+  <div class="absolute inset-0 bg-hero pointer-events-none"></div>
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 grid lg:grid-cols-2 gap-12 items-center">
+    <div>
+      <div class="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs font-medium mb-6" style="color:var(--muted)">
+        <span class="h-2 w-2 rounded-full animate-pulse-glow" style="background:var(--accent)"></span>
+        <span data-t="hero.badge"></span>
+      </div>
+      <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.05]">
+        <span data-t="hero.title1"></span><br>
+        <span data-t="hero.title2"></span> <span class="text-gradient" data-t="hero.title3"></span>
+      </h1>
+      <p class="mt-6 text-lg max-w-xl" style="color:var(--muted)" data-t="hero.desc"></p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="#pricing" class="inline-flex items-center gap-2 rounded-md bg-grad-primary h-12 px-6 font-semibold text-white shadow-glow smooth hover:opacity-90">
+          <span data-t="hero.cta"></span><i data-lucide="arrow-right" class="h-4 w-4"></i>
+        </a>
+        <a href="#avatar" class="inline-flex items-center gap-2 rounded-md glass h-12 px-6 font-semibold smooth hover-glass">
+          <i data-lucide="user-round" class="h-4 w-4"></i><span data-t="hero.demo"></span>
+        </a>
+      </div>
+      <div class="mt-8 flex items-center gap-6 text-sm" style="color:var(--muted)">
+        <div><span class="text-white font-semibold">+12k</span> <span data-t="hero.stat1"></span></div>
+        <div><span class="text-white font-semibold">4.9★</span> <span data-t="hero.stat2"></span></div>
+        <div class="hidden sm:block"><span class="text-white font-semibold" data-t="hero.stat3a"></span> <span data-t="hero.stat3b"></span></div>
+      </div>
+    </div>
+
+    <div class="relative">
+      <!-- Hero avatar: swaps to uploaded photo -->
+      <div class="relative rounded-3xl overflow-hidden border shadow-glow animate-float" style="border-color:var(--border)">
+        <img id="heroAvatarImg"
+          src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=80"
+          alt="AI tutor" class="w-full h-auto" />
+        <div id="heroUploadHint" onclick="document.getElementById('avatarSection').scrollIntoView({behavior:'smooth'})"
+          class="absolute inset-0 flex flex-col items-center justify-center gap-2 opacity-0 hover:opacity-100 smooth cursor-pointer"
+          style="background:rgba(21,18,30,.65)">
+          <i data-lucide="upload" class="h-7 w-7" style="color:var(--accent)"></i>
+          <span class="text-sm font-semibold" data-t="hero.uploadHint"></span>
+        </div>
+      </div>
+      <div class="absolute -bottom-6 -left-6 glass rounded-2xl p-4 hidden sm:flex items-center gap-3">
+        <div class="grid h-10 w-10 place-items-center rounded-full bg-grad-accent flex-shrink-0">
+          <i data-lucide="mic" class="h-5 w-5" style="color:#1a1424"></i>
+        </div>
+        <div>
+          <div class="text-xs" style="color:var(--muted)" data-t="hero.pron"></div>
+          <div class="text-sm font-semibold" data-t="hero.pronVal"></div>
+        </div>
+      </div>
+      <div class="absolute -top-6 -right-6 glass rounded-2xl p-4 hidden sm:block">
+        <div class="text-xs" style="color:var(--muted)" data-t="hero.streak"></div>
+        <div class="text-2xl font-bold text-gradient" data-t="hero.streakVal"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FEATURES ═══════════ -->
+<section id="features" class="py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="max-w-2xl">
+      <h2 class="text-4xl sm:text-5xl font-bold">
+        <span data-t="feat.h1"></span> <span class="text-gradient" data-t="feat.h2"></span>
+      </h2>
+      <p class="mt-4 text-lg" style="color:var(--muted)" data-t="feat.sub"></p>
+    </div>
+    <div id="featureGrid" class="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+  </div>
+</section>
+
+<!-- ═══════════ SCENARIOS ═══════════ -->
+<section id="scenarios" class="py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="max-w-2xl">
+      <h2 class="text-4xl sm:text-5xl font-bold">
+        <span data-t="scn.h1"></span> <span class="text-gradient" data-t="scn.h2"></span>
+      </h2>
+      <p class="mt-4 text-lg" style="color:var(--muted)" data-t="scn.sub"></p>
+    </div>
+    <div id="scenarioGrid" class="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-5"></div>
+  </div>
+</section>
+
+<!-- ═══════════ AVATAR ═══════════ -->
+<section id="avatar" class="py-24 sm:py-32">
+  <div id="avatarSection" class="mx-auto max-w-7xl px-4 sm:px-6 grid lg:grid-cols-2 gap-16 items-start">
+
+    <!-- Left: upload + steps -->
+    <div>
+      <div class="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs font-medium mb-6"
+        style="color:var(--muted)" data-t="av.badge"></div>
+      <h2 class="text-4xl sm:text-5xl font-bold">
+        <span data-t="av.h1"></span> <span class="text-gradient" data-t="av.h2"></span> <span data-t="av.h3"></span>
+      </h2>
+      <p class="mt-6 text-lg" style="color:var(--muted)" data-t="av.desc"></p>
+
+      <div class="mt-8 grid sm:grid-cols-3 gap-4">
+        <div class="rounded-2xl glass p-4 smooth hover:-translate-y-1">
+          <div class="font-semibold" data-t="av.s1t"></div>
+          <div class="text-sm mt-1" style="color:var(--muted)" data-t="av.s1d"></div>
+        </div>
+        <div class="rounded-2xl glass p-4 smooth hover:-translate-y-1">
+          <div class="font-semibold" data-t="av.s2t"></div>
+          <div class="text-sm mt-1" style="color:var(--muted)" data-t="av.s2d"></div>
+        </div>
+        <div class="rounded-2xl glass p-4 smooth hover:-translate-y-1">
+          <div class="font-semibold" data-t="av.s3t"></div>
+          <div class="text-sm mt-1" style="color:var(--muted)" data-t="av.s3d"></div>
+        </div>
+      </div>
+
+      <!-- Upload zone -->
+      <div class="mt-10">
+        <p class="text-sm font-semibold mb-3" data-t="av.uploadLabel"></p>
+        <div id="avatarDropZone"
+          onclick="document.getElementById('avatarFileInput').click()"
+          ondragover="handleDragOver(event)"
+          ondragleave="handleDragLeave(event)"
+          ondrop="handleDrop(event)"
+          role="button" tabindex="0"
+          onkeydown="if(event.key==='Enter'||event.key===' ')document.getElementById('avatarFileInput').click()">
+
+          <!-- Real file input (opacity:0, pointer-events:none so click goes to parent) -->
+          <input type="file" id="avatarFileInput" accept="image/*" capture="user"
+            onclick="event.stopPropagation()" onchange="handleFileSelect(event)"
+            style="pointer-events:none" />
+
+          <!-- Empty state -->
+          <div id="avatarEmptyState" class="flex flex-col items-center gap-3 py-8 px-4 text-center">
+            <div class="grid h-14 w-14 place-items-center rounded-2xl bg-grad-primary shadow-glow">
+              <i data-lucide="camera" class="h-6 w-6 text-white"></i>
+            </div>
+            <div>
+              <p class="font-semibold text-sm" data-t="av.dropTitle"></p>
+              <p class="text-xs mt-1" style="color:var(--muted)" data-t="av.dropSub"></p>
+            </div>
+            <div class="flex items-center gap-3 w-full mt-1">
+              <div class="flex-1 h-px" style="background:var(--border)"></div>
+              <span class="text-xs" style="color:var(--muted)" data-t="av.or"></span>
+              <div class="flex-1 h-px" style="background:var(--border)"></div>
+            </div>
+            <button type="button"
+              onclick="event.stopPropagation();document.getElementById('avatarFileInput').click()"
+              class="rounded-md bg-grad-primary px-4 py-2 text-sm font-semibold text-white shadow-glow smooth hover:opacity-90"
+              data-t="av.browseBtn"></button>
+          </div>
+
+          <!-- Preview state -->
+          <div id="avatarPreviewContainer" class="hidden">
+            <img id="avatarPreviewImg" src="" alt="Avatar preview" />
+            <div class="avatar-badge-overlay">
+              <span class="h-2 w-2 rounded-full" style="background:var(--accent)"></span>
+              <span data-t="av.readyBadge"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions (visible after upload) -->
+        <div id="avatarActions" class="hidden mt-3" style="display:none;align-items:center;gap:.75rem;flex-wrap:wrap">
+          <button onclick="clearAvatar()"
+            class="inline-flex items-center gap-1.5 rounded-md glass px-3 py-1.5 text-xs font-medium smooth hover-glass"
+            style="color:var(--muted)">
+            <i data-lucide="trash-2" class="h-3.5 w-3.5"></i>
+            <span data-t="av.removeBtn"></span>
+          </button>
+          <button onclick="openAvatarModal()"
+            class="inline-flex items-center gap-1.5 rounded-md bg-grad-primary px-4 py-1.5 text-xs font-semibold text-white smooth hover:opacity-90 shadow-glow">
+            <i data-lucide="message-circle" class="h-3.5 w-3.5"></i>
+            <span data-t="av.chatBtn"></span>
+          </button>
+        </div>
+      </div>
+
+      <p class="mt-5 text-xs flex items-center gap-1.5" style="color:var(--muted)">
+        <i data-lucide="shield-check" class="h-3.5 w-3.5 flex-shrink-0"></i>
+        <span data-t="av.privacy"></span>
+      </p>
+    </div>
+
+    <!-- Right: chat preview -->
+    <div class="rounded-3xl glass p-6 shadow-glow" style="position:sticky;top:6rem">
+      <!-- Chat header -->
+      <div class="flex items-center gap-3 mb-5 pb-4" style="border-bottom:1px solid var(--border)">
+        <div class="relative h-12 w-12 flex-shrink-0">
+          <img id="chatAvatarImg"
+            src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=200&q=80"
+            alt="Avatar" class="h-12 w-12 rounded-full object-cover" style="border:3px solid var(--primary);box-shadow:0 0 0 3px rgba(176,97,255,.25)" />
+          <span class="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 animate-pulse-glow"
+            style="background:var(--accent);border-color:#1f1b2c"></span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="font-semibold text-sm" data-t="av.tutorName"></div>
+          <div class="text-xs" style="color:var(--muted)" data-t="av.speaking"></div>
+        </div>
+        <div class="grid h-8 w-8 place-items-center rounded-lg bg-grad-primary flex-shrink-0">
+          <i data-lucide="sparkles" class="h-4 w-4 text-white"></i>
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div id="chatMessages" class="overflow-y-auto pr-1" style="max-height:240px;min-height:160px"></div>
+
+      <!-- Typing indicator -->
+      <div id="typingIndicator" class="hidden mt-2">
+        <div class="chat-bubble bot inline-flex items-center gap-1.5" style="padding:.45rem .75rem">
+          <span class="h-1.5 w-1.5 rounded-full animate-bounce" style="background:var(--muted);animation-delay:0ms"></span>
+          <span class="h-1.5 w-1.5 rounded-full animate-bounce" style="background:var(--muted);animation-delay:150ms"></span>
+          <span class="h-1.5 w-1.5 rounded-full animate-bounce" style="background:var(--muted);animation-delay:300ms"></span>
+        </div>
+      </div>
+
+      <!-- Input -->
+      <div class="mt-4 flex items-center gap-2">
+        <input id="chatInput" type="text"
+          class="flex-1 rounded-xl glass px-3 py-2.5 text-sm outline-none"
+          style="color:var(--fg);caret-color:var(--primary)"
+          onkeydown="if(event.key==='Enter')sendChatMsg()" />
+        <button onclick="sendChatMsg()"
+          class="grid h-10 w-10 place-items-center rounded-xl bg-grad-primary shadow-glow smooth hover:opacity-90 flex-shrink-0">
+          <i data-lucide="send" class="h-4 w-4 text-white"></i>
+        </button>
+        <button id="micBtn" onclick="toggleMic()"
+          class="grid h-10 w-10 place-items-center rounded-xl glass smooth hover-glass flex-shrink-0"
+          style="color:var(--muted)" aria-label="Microfone">
+          <i data-lucide="mic" class="h-4 w-4"></i>
+        </button>
+      </div>
+      <p class="mt-2 text-center text-xs" style="color:var(--muted)" data-t="av.modalDisclaimer"></p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════ PRICING ═══════════ -->
+<section id="pricing" class="py-24 sm:py-32">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6">
+    <div class="text-center max-w-2xl mx-auto">
+      <h2 class="text-4xl sm:text-5xl font-bold">
+        <span data-t="pr.h1"></span> <span class="text-gradient" data-t="pr.h2"></span>
+      </h2>
+      <p class="mt-4 text-lg" style="color:var(--muted)" data-t="pr.sub"></p>
+    </div>
+    <div class="mt-14 grid lg:grid-cols-2 gap-6">
+      <div class="rounded-3xl glass p-8">
+        <div class="text-sm font-medium" style="color:var(--muted)" data-t="pr.trial"></div>
+        <div class="mt-2 flex items-baseline gap-2">
+          <span class="text-5xl font-bold">€0</span>
+          <span style="color:var(--muted)" data-t="pr.trialPeriod"></span>
+        </div>
+        <p class="mt-3 text-sm" style="color:var(--muted)" data-t="pr.trialDesc"></p>
+        <a href="#" class="mt-6 block text-center rounded-md glass h-11 leading-[44px] font-semibold smooth hover-glass"
+          data-t="pr.trialCta"></a>
+      </div>
+      <div class="relative rounded-3xl p-8 bg-grad-primary text-white shadow-glow">
+        <div class="absolute top-4 right-4 rounded-full bg-grad-accent text-xs font-semibold px-3 py-1"
+          style="color:#1a1424" data-t="pr.popular"></div>
+        <div class="text-sm font-medium opacity-90" data-t="pr.premium"></div>
+        <div class="mt-2 flex items-baseline gap-2">
+          <span class="text-5xl font-bold">€10</span>
+          <span class="opacity-80" data-t="pr.month"></span>
+        </div>
+        <p class="mt-3 text-sm opacity-90" data-t="pr.premDesc"></p>
+        <ul id="perks" class="mt-6 space-y-2.5 text-sm"></ul>
+        <a href="#" class="mt-7 block text-center rounded-md h-11 leading-[44px] font-semibold bg-white smooth hover:opacity-90"
+          style="color:#1a1424" data-t="pr.cta"></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer class="border-t py-12 mt-12" style="border-color:var(--border)">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div class="flex items-center gap-2">
+      <div class="grid h-8 w-8 place-items-center rounded-lg bg-grad-primary">
+        <i data-lucide="sparkles" class="h-4 w-4 text-white"></i>
+      </div>
+      <span style="font-family:'Sora',sans-serif" class="font-semibold">Lingva<span class="text-gradient">AI</span></span>
+    </div>
+    <p class="text-sm" style="color:var(--muted)">© <span id="yr"></span> LingvaAI. <span data-t="ft.tagline"></span></p>
+    <div class="flex gap-5 text-sm" style="color:var(--muted)">
+      <a href="#" class="hover:text-white smooth" data-t="ft.privacy"></a>
+      <a href="#" class="hover:text-white smooth" data-t="ft.terms"></a>
+      <a href="#" class="hover:text-white smooth" data-t="ft.contact"></a>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════ MODAL ═══════════ -->
+<div id="avatarModal" role="dialog" aria-modal="true">
+  <div class="glass rounded-3xl w-full max-w-md shadow-glow animate-fadeIn" style="max-height:90vh;display:flex;flex-direction:column">
+    <!-- Header -->
+    <div class="flex items-center gap-3 p-5" style="border-bottom:1px solid var(--border)">
+      <div class="relative h-11 w-11 flex-shrink-0">
+        <img id="modalAvatarImg"
+          src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=200&q=80"
+          alt="Avatar" class="h-11 w-11 rounded-full object-cover" style="border:3px solid var(--primary);box-shadow:0 0 0 3px rgba(176,97,255,.25)" />
+        <span class="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 animate-pulse-glow"
+          style="background:var(--accent);border-color:#1f1b2c"></span>
+      </div>
+      <div class="flex-1">
+        <div class="font-semibold" data-t="av.tutorName"></div>
+        <div class="text-xs" style="color:var(--muted)" data-t="av.speaking"></div>
+      </div>
+      <button onclick="closeModal()" class="rounded-lg glass p-2 smooth hover-glass" aria-label="Fechar">
+        <i data-lucide="x" class="h-4 w-4"></i>
+      </button>
+    </div>
+    <!-- Messages -->
+    <div id="modalChatMessages" class="flex-1 overflow-y-auto p-5" style="min-height:180px"></div>
+    <!-- Typing -->
+    <div id="modalTyping" class="hidden px-5 pb-2">
+      <div class="chat-bubble bot inline-flex items-center gap-1.5" style="padding:.45rem .75rem">
+        <span class="h-1.5 w-1.5 rounded-full animate-bounce" style="background:var(--muted);animation-delay:0ms"></span>
+        <span class="h-1.5 w-1.5 rounded-full animate-bounce" style="background:var(--muted);animation-delay:150ms"></span>
+        <span class="h-1.5 w-1.5 rounded-full animate-bounce" style="background:var(--muted);animation-delay:300ms"></span>
+      </div>
+    </div>
+    <!-- Input -->
+    <div class="p-5 pt-3" style="border-top:1px solid var(--border)">
+      <div class="flex items-center gap-2">
+        <input id="modalInput" type="text"
+          class="flex-1 rounded-xl glass px-3 py-2.5 text-sm outline-none"
+          style="color:var(--fg);caret-color:var(--primary)"
+          onkeydown="if(event.key==='Enter')sendModalMsg()" />
+        <button onclick="sendModalMsg()"
+          class="grid h-10 w-10 place-items-center rounded-xl bg-grad-primary shadow-glow smooth hover:opacity-90 flex-shrink-0">
+          <i data-lucide="send" class="h-4 w-4 text-white"></i>
+        </button>
+      </div>
+      <p class="mt-2 text-center text-xs" style="color:var(--muted)" data-t="av.modalDisclaimer"></p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ SCRIPTS ═══════════ -->
+<script>
+/* ── Dictionary ─────────────────────────────────────────────── */
+const dict = {
+  "nav.features":["Recursos","Features"],"nav.scenarios":["Cenários","Scenarios"],
+  "nav.avatar":["Avatar IA","AI Avatar"],"nav.pricing":["Planos","Pricing"],
+  "nav.signup":["Começar grátis","Start free"],
+  "hero.badge":["IA conversacional · Feito para brasileiros","Conversational AI · Built for learners"],
+  "hero.title1":["Aprenda inglês","Learn English"],"hero.title2":["conversando com sua","by chatting with your"],
+  "hero.title3":["IA tutora","AI tutor"],
+  "hero.desc":["Pratique diálogos reais, receba correções instantâneas e melhore sua pronúncia com reconhecimento de voz. Um professor particular disponível 24h por dia.",
+               "Practice real dialogues, get instant corrections and improve your pronunciation with voice recognition. A private teacher available 24/7."],
+  "hero.cta":["Começar grátis hoje","Start free today"],
+  "hero.demo":["Criar meu avatar","Create my avatar"],
+  "hero.stat1":["alunos ativos","active students"],"hero.stat2":["avaliação média","average rating"],
+  "hero.stat3a":["1º dia","Day 1"],"hero.stat3b":["grátis","free"],
+  "hero.pron":["Pronúncia","Pronunciation"],"hero.pronVal":["98% perfeita","98% perfect"],
+  "hero.streak":["Streak","Streak"],"hero.streakVal":["14 dias 🔥","14 days 🔥"],
+  "hero.uploadHint":["Trocar foto do avatar","Change avatar photo"],
+  "feat.h1":["Tudo o que você precisa para","Everything you need to"],
+  "feat.h2":["falar inglês de verdade","truly speak English"],
+  "feat.sub":["Uma plataforma premium que une IA, prática real e gamificação.","A premium platform combining AI, real practice and gamification."],
+  "feat.1t":["IA adaptativa","Adaptive AI"],"feat.1d":["Aprende com você e ajusta dificuldade em tempo real.","Learns from you and adjusts difficulty in real time."],
+  "feat.2t":["Voz e pronúncia","Voice & pronunciation"],"feat.2d":["Reconhecimento de voz com feedback de fluência (US/UK).","Voice recognition with fluency feedback (US/UK)."],
+  "feat.3t":["Diálogos reais","Real dialogues"],"feat.3d":["Entrevistas, viagens, reuniões e cotidiano em inglês natural.","Interviews, travel, meetings in natural English."],
+  "feat.4t":["Gamificação","Gamification"],"feat.4d":["XP, níveis, conquistas e streaks diários.","XP, levels, achievements and daily streaks."],
+  "feat.5t":["Metas pessoais","Personal goals"],"feat.5d":["Defina objetivos e acompanhe seu progresso.","Set goals and track your progress."],
+  "feat.6t":["Correção instantânea","Instant correction"],"feat.6d":["Erros corrigidos na hora com explicações simples.","Mistakes fixed instantly with simple explanations."],
+  "scn.h1":["Pratique","Practice"],"scn.h2":["cenários reais","real scenarios"],
+  "scn.sub":["Mais de 60 simulações imersivas com níveis progressivos.","Over 60 immersive simulations with progressive levels."],
+  "av.badge":["Novo · Avatar IA personalizado","New · Personalized AI Avatar"],
+  "av.h1":["Seu próprio","Your own"],"av.h2":["professor virtual","virtual teacher"],"av.h3":["com a sua cara","with your face"],
+  "av.desc":["Faça upload de uma foto e crie um avatar que conversa, ensina pronúncia e corrige erros em tempo real.",
+             "Upload a photo and create an avatar that talks, teaches pronunciation and corrects you in real time."],
+  "av.s1t":["1. Upload","1. Upload"],"av.s1d":["Selfie ou imagem","Selfie or image"],
+  "av.s2t":["2. Estilize","2. Customize"],"av.s2d":["Voz e personalidade","Voice and personality"],
+  "av.s3t":["3. Converse","3. Chat"],"av.s3d":["Aulas em tempo real","Real-time lessons"],
+  "av.uploadLabel":["Sua foto de avatar","Your avatar photo"],
+  "av.dropTitle":["Arraste sua foto aqui","Drag your photo here"],
+  "av.dropSub":["PNG, JPG ou WEBP · Máx. 10 MB","PNG, JPG or WEBP · Max 10 MB"],
+  "av.or":["ou","or"],
+  "av.browseBtn":["Escolher arquivo","Choose file"],
+  "av.readyBadge":["Avatar pronto ✓","Avatar ready ✓"],
+  "av.removeBtn":["Remover foto","Remove photo"],
+  "av.chatBtn":["Iniciar conversa","Start chatting"],
+  "av.cta":["Criar meu avatar","Create my avatar"],
+  "av.privacy":["Imagens processadas localmente · LGPD/GDPR","Images processed locally · LGPD/GDPR"],
+  "av.speaking":["Falando agora…","Speaking now…"],
+  "av.tutorName":["Seu Tutor IA","Your AI Tutor"],
+  "av.inputPlaceholder":["Digite em inglês…","Type in English…"],
+  "av.modalDisclaimer":["Conversa demonstrativa · respostas simuladas","Demo conversation · simulated responses"],
+  "pr.h1":["Um plano.","One plan."],"pr.h2":["Tudo incluso.","Everything included."],
+  "pr.sub":["Comece com 1 dia grátis. Depois, €10/mês.","Start with 1 day free. Then €10/month."],
+  "pr.trial":["Teste","Trial"],"pr.trialPeriod":["/ 1º dia","/ day 1"],
+  "pr.trialDesc":["Conheça a plataforma sem compromisso por 24h.","Try the platform free for 24 hours."],
+  "pr.trialCta":["Criar conta grátis","Create free account"],
+  "pr.popular":["Mais popular","Most popular"],"pr.premium":["Premium","Premium"],
+  "pr.month":["/ mês","/ month"],
+  "pr.premDesc":["Acesso completo e ilimitado. Cancele quando quiser.","Full unlimited access. Cancel anytime."],
+  "pr.cta":["Assinar Premium","Subscribe to Premium"],
+  "pr.p1":["Conversas ilimitadas com a IA","Unlimited AI conversations"],
+  "pr.p2":["Reconhecimento de voz (US/UK)","Voice recognition (US/UK)"],
+  "pr.p3":["Mais de 60 cenários reais","Over 60 real scenarios"],
+  "pr.p4":["Correções gramaticais instantâneas","Instant grammar corrections"],
+  "pr.p5":["Sistema de XP e conquistas","XP & achievements"],
+  "pr.p6":["Dashboard de progresso","Progress dashboard"],
+  "pr.p7":["Cancele quando quiser","Cancel anytime"],
+  "ft.tagline":["Aprenda inglês com IA.","Learn English with AI."],
+  "ft.privacy":["Privacidade","Privacy"],"ft.terms":["Termos","Terms"],"ft.contact":["Contato","Contact"],
+};
+const features=[["brain","feat.1t","feat.1d"],["mic-2","feat.2t","feat.2d"],["messages-square","feat.3t","feat.3d"],["trophy","feat.4t","feat.4d"],["target","feat.5t","feat.5d"],["zap","feat.6t","feat.6d"]];
+const scenarios={"Trabalho|Work":["Entrevista|Job interview","Reunião|Meeting","Apresentação|Presentation","Negociação|Negotiation"],"Viagem|Travel":["Aeroporto|Airport","Hotel|Hotel","Restaurante|Restaurant","Imigração|Immigration"],"Cotidiano|Daily":["Supermercado|Supermarket","Médico|Doctor","Amigos|Friends","Compras|Shopping"],"Estudos|Studies":["Faculdade|College","Intercâmbio|Exchange","Acadêmico|Academic","Apresentações|Presentations"]};
+
+/* ── Bot replies (demo simulation) ─────────────────────────── */
+const botReplies = {
+  pt:["Ótimo! Vamos praticar. Tente me dizer: \"What is your name?\"","Muito bem! Agora diga: \"I would like a coffee, please.\"","Quase perfeito! O 'th' em inglês é pronunciado encostando a língua nos dentes.","Excelente progresso! Você está melhorando rápido. Vamos tentar algo mais difícil?","Boa tentativa! Um nativo diria: \"Could you repeat that, please?\"","Perfeito! Sua pronúncia está ótima. Mais uma: \"I didn't understand. Can you speak slowly?\""],
+  en:["Great! Let's practice. Try saying: \"What is your name?\"","Well done! Now say: \"I would like a coffee, please.\"","Almost perfect! The 'th' sound is made by placing your tongue between your teeth.","Excellent progress! You're improving fast. Let's try something harder?","Good try! A native speaker would say: \"Could you repeat that, please?\"","Perfect! Your pronunciation is great. One more: \"I didn't understand. Can you speak slowly?\""],
+};
+let botIdx=0, modalBotIdx=0;
+
+/* ── Language ───────────────────────────────────────────────── */
+let lang="pt";
+try{lang=localStorage.getItem("lingvaai-lang")||"pt";}catch(e){}
+const li=()=>lang==="pt"?0:1;
+
+function applyLang(){
+  document.documentElement.lang=lang==="pt"?"pt-BR":"en";
+  document.getElementById("langLabel").textContent=lang.toUpperCase();
+  document.querySelectorAll("[data-t]").forEach(el=>{const k=el.getAttribute("data-t");if(dict[k])el.textContent=dict[k][li()];});
+  // placeholders
+  const ci=document.getElementById("chatInput");
+  if(ci)ci.placeholder=dict["av.inputPlaceholder"][li()];
+  const mi=document.getElementById("modalInput");
+  if(mi)mi.placeholder=dict["av.inputPlaceholder"][li()];
+  // feature grid
+  const fg=document.getElementById("featureGrid");fg.innerHTML="";
+  features.forEach(([ic,tk,dk])=>{fg.insertAdjacentHTML("beforeend",`<div class="rounded-2xl glass p-6 smooth hover:-translate-y-1"><div class="grid h-11 w-11 place-items-center rounded-xl bg-grad-primary shadow-glow mb-4"><i data-lucide="${ic}" class="h-5 w-5 text-white"></i></div><h3 class="text-lg font-semibold">${dict[tk][li()]}</h3><p class="mt-2 text-sm" style="color:var(--muted)">${dict[dk][li()]}</p></div>`);});
+  // scenario grid
+  const sg=document.getElementById("scenarioGrid");sg.innerHTML="";
+  Object.entries(scenarios).forEach(([cat,items])=>{const[a,b]=cat.split("|");sg.insertAdjacentHTML("beforeend",`<div class="rounded-2xl glass p-5"><div class="text-xs uppercase tracking-wider mb-3" style="color:var(--muted)">${li()===0?a:b}</div><ul class="space-y-2 text-sm">${items.map(i=>{const[x,y]=i.split("|");return`<li class="smooth hover:text-white cursor-default">${li()===0?x:y}</li>`;}).join("")}</ul></div>`);});
+  // perks
+  const p=document.getElementById("perks");p.innerHTML="";
+  for(let i=1;i<=7;i++){p.insertAdjacentHTML("beforeend",`<li class="flex items-start gap-2"><i data-lucide="check" class="h-4 w-4 mt-0.5 flex-shrink-0" style="color:var(--accent)"></i><span>${dict["pr.p"+i][li()]}</span></li>`);}
+  if(window.lucide)lucide.createIcons();
+  initChatDemo();
+}
+function toggleLang(){lang=lang==="pt"?"en":"pt";try{localStorage.setItem("lingvaai-lang",lang);}catch(e){}botIdx=0;modalBotIdx=0;applyLang();}
+
+/* ── Avatar upload ──────────────────────────────────────────── */
+const DEFAULT_SRC="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=200&q=80";
+let avatarDataURL=null;
+
+function handleFileSelect(e){const f=e.target.files&&e.target.files[0];if(f)processFile(f);}
+function handleDragOver(e){e.preventDefault();e.stopPropagation();document.getElementById("avatarDropZone").classList.add("drag-over");}
+function handleDragLeave(e){e.preventDefault();document.getElementById("avatarDropZone").classList.remove("drag-over");}
+function handleDrop(e){
+  e.preventDefault();e.stopPropagation();
+  document.getElementById("avatarDropZone").classList.remove("drag-over");
+  const f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0];
+  if(f&&f.type.startsWith("image/"))processFile(f);
+}
+function processFile(file){
+  if(file.size>10*1024*1024){alert(lang==="pt"?"Arquivo muito grande. Máximo 10 MB.":"File too large. Max 10 MB.");return;}
+  const r=new FileReader();
+  r.onload=ev=>{avatarDataURL=ev.target.result;applyAvatar(avatarDataURL);};
+  r.readAsDataURL(file);
+}
+function applyAvatar(src){
+  // Drop zone: show preview
+  document.getElementById("avatarPreviewImg").src=src;
+  document.getElementById("avatarPreviewContainer").classList.remove("hidden");
+  document.getElementById("avatarEmptyState").classList.add("hidden");
+  document.getElementById("avatarDropZone").style.minHeight="0";
+  // Show action buttons
+  const act=document.getElementById("avatarActions");
+  act.classList.remove("hidden");act.style.display="flex";
+  // Update all avatar images on page
+  document.getElementById("chatAvatarImg").src=src;
+  document.getElementById("heroAvatarImg").src=src;
+  document.getElementById("modalAvatarImg").src=src;
+  // Reset input
+  document.getElementById("avatarFileInput").value="";
+  if(window.lucide)lucide.createIcons();
+}
+function clearAvatar(){
+  avatarDataURL=null;
+  document.getElementById("avatarPreviewContainer").classList.add("hidden");
+  document.getElementById("avatarEmptyState").classList.remove("hidden");
+  document.getElementById("avatarDropZone").style.minHeight="260px";
+  const act=document.getElementById("avatarActions");act.classList.add("hidden");act.style.display="none";
+  document.getElementById("chatAvatarImg").src=DEFAULT_SRC;
+  document.getElementById("heroAvatarImg").src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=80";
+  document.getElementById("modalAvatarImg").src=DEFAULT_SRC;
+  document.getElementById("avatarFileInput").value="";
+  if(window.lucide)lucide.createIcons();
+}
+
+/* ── Chat demo (section widget) ─────────────────────────────── */
+function initChatDemo(){
+  const c=document.getElementById("chatMessages");c.innerHTML="";
+  const g=lang==="pt"?"Olá! 👋 Sou seu tutor de inglês. Escreva algo em inglês e te ajudo!":"Hello! 👋 I'm your English tutor. Write something and I'll help you!";
+  addMsg(c,g,"bot");
+}
+function addMsg(container,text,role){
+  const d=document.createElement("div");d.className="chat-bubble "+role;d.textContent=text;
+  container.appendChild(d);container.scrollTop=container.scrollHeight;
+}
+function sendChatMsg(){
+  const inp=document.getElementById("chatInput"),txt=inp.value.trim();if(!txt)return;inp.value="";
+  const c=document.getElementById("chatMessages");addMsg(c,txt,"user");
+  document.getElementById("typingIndicator").classList.remove("hidden");
+  setTimeout(()=>{
+    document.getElementById("typingIndicator").classList.add("hidden");
+    addMsg(c,botReplies[lang][botIdx%botReplies[lang].length],"bot");botIdx++;
+  },1100+Math.random()*700);
+}
+
+/* ── Modal ──────────────────────────────────────────────────── */
+function openAvatarModal(){
+  const m=document.getElementById("avatarModal");m.classList.add("open");document.body.style.overflow="hidden";
+  const c=document.getElementById("modalChatMessages");
+  if(!c.children.length){const g=lang==="pt"?"Olá! 👋 Pronto para praticar? Me diga algo em inglês!":"Hello! 👋 Ready to practice? Say something in English!";addMsg(c,g,"bot");}
+  setTimeout(()=>{const i=document.getElementById("modalInput");if(i)i.focus();},80);
+}
+function closeModal(){document.getElementById("avatarModal").classList.remove("open");document.body.style.overflow="";}
+function sendModalMsg(){
+  const inp=document.getElementById("modalInput"),txt=inp.value.trim();if(!txt)return;inp.value="";
+  const c=document.getElementById("modalChatMessages");addMsg(c,txt,"user");
+  document.getElementById("modalTyping").classList.remove("hidden");
+  setTimeout(()=>{
+    document.getElementById("modalTyping").classList.add("hidden");
+    addMsg(c,botReplies[lang][modalBotIdx%botReplies[lang].length],"bot");modalBotIdx++;
+  },1000+Math.random()*800);
+}
+document.getElementById("avatarModal").addEventListener("click",function(e){if(e.target===this)closeModal();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
+
+/* ── Mic toggle ─────────────────────────────────────────────── */
+let micOn=false;
+function toggleMic(){
+  micOn=!micOn;
+  const b=document.getElementById("micBtn");
+  b.style.backgroundImage=micOn?"var(--grad-primary)":"";
+  b.style.color=micOn?"white":"";
+}
+
+/* ── Init ───────────────────────────────────────────────────── */
+document.getElementById("yr").textContent=new Date().getFullYear();
+applyLang();
+</script>
+</body>
+</html>
