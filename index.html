@@ -53,78 +53,32 @@ img{display:block;max-width:100%}
 @keyframes micPulse{0%{box-shadow:0 0 0 0 rgba(217,255,77,.8)}100%{box-shadow:0 0 0 15px rgba(217,255,77,0)}}
 .animate-mic-pulse{animation:micPulse 1.5s infinite}
 
-#avatarDropZone{
-  border:2px dashed var(--border);border-radius:1rem;cursor:pointer;
-  transition:border-color .25s,background .25s;position:relative;
-  overflow:hidden;min-height:260px;display:flex;align-items:center;justify-content:center;
-}
+#avatarDropZone{border:2px dashed var(--border);border-radius:1rem;cursor:pointer;transition:border-color .25s,background .25s;position:relative;overflow:hidden;min-height:260px;display:flex;align-items:center;justify-content:center;}
 #avatarDropZone:hover,#avatarDropZone.drag-over{border-color:var(--primary);background:rgba(176,97,255,.07)}
 #avatarDropZone input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
 #avatarPreviewContainer{position:relative;width:100%;aspect-ratio:1/1}
 #avatarPreviewImg{width:100%;height:100%;object-fit:cover;border-radius:calc(1rem - 2px)}
-.avatar-ring{border:3px solid var(--primary);box-shadow:0 0 0 3px rgba(176,97,255,.25),var(--shadow-glow);border-radius:1rem}
-.avatar-badge-overlay{
-  position:absolute;bottom:-12px;right:-12px;
-  background:rgba(21,18,30,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  border:1px solid var(--border);border-radius:.75rem;
-  padding:.5rem .75rem;display:flex;align-items:center;gap:.4rem;font-size:.75rem;white-space:nowrap;
-}
+.avatar-badge-overlay{position:absolute;bottom:-12px;right:-12px;background:rgba(21,18,30,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:.75rem;padding:.5rem .75rem;display:flex;align-items:center;gap:.4rem;font-size:.75rem;white-space:nowrap;}
 
 .chat-bubble{max-width:82%;padding:.6rem .9rem;border-radius:1rem;font-size:.82rem;line-height:1.45;animation:fadeIn .35s ease both}
 .chat-bubble.bot{background:rgba(176,97,255,.18);border:1px solid rgba(176,97,255,.25);align-self:flex-start}
 .chat-bubble.user{background:rgba(255,255,255,.07);border:1px solid var(--border);align-self:flex-end}
 #chatMessages,#modalChatMessages{display:flex;flex-direction:column;gap:.6rem}
 
-#avatarModal, #authModal, #accountModal{
-  display:none;position:fixed;inset:0;z-index:100;
-  background:rgba(0,0,0,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
-  align-items:center;justify-content:center;padding:1rem;
-}
+#avatarModal, #authModal, #accountModal{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:1rem;}
 #avatarModal.open, #authModal.open, #accountModal.open{display:flex}
 
-.pronunciation-badge{
-  display:inline-flex;align-items:center;gap:.5rem;padding:.4rem .8rem;
-  border-radius:.75rem;background:rgba(176,97,255,.15);border:1px solid rgba(176,97,255,.3);
-  font-size:.85rem;font-weight:500;
-}
-
-.mic-indicator{
-  display:inline-flex;align-items:center;gap:.5rem;padding:.4rem .8rem;
-  border-radius:.75rem;background:rgba(217,255,77,.15);border:1px solid rgba(217,255,77,.3);
-  font-size:.85rem;
-}
-
-.form-input{
-  width:100%;padding:.75rem 1rem;border-radius:.75rem;border:1px solid var(--border);
-  background:rgba(255,255,255,.04);color:var(--fg);font-size:.95rem;
-}
+.form-input{width:100%;padding:.75rem 1rem;border-radius:.75rem;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--fg);font-size:.95rem;}
 .form-input:focus{outline:none;border-color:var(--primary);background:rgba(255,255,255,.08)}
 
-.btn-primary{
-  display:inline-flex;align-items:center;gap:.5rem;padding:.6rem 1.5rem;
-  border-radius:.75rem;background:var(--grad-primary);color:white;font-weight:600;
-  cursor:pointer;border:none;transition:all .3s;box-shadow:var(--shadow-glow);
-}
+.btn-primary{display:inline-flex;align-items:center;gap:.5rem;padding:.6rem 1.5rem;border-radius:.75rem;background:var(--grad-primary);color:white;font-weight:600;cursor:pointer;border:none;transition:all .3s;box-shadow:var(--shadow-glow);}
 .btn-primary:hover{opacity:.9;transform:translateY(-2px)}
-.btn-primary:active{transform:translateY(0)}
 
-.btn-secondary{
-  display:inline-flex;align-items:center;gap:.5rem;padding:.6rem 1.5rem;
-  border-radius:.75rem;background:rgba(255,255,255,.04);color:var(--fg);font-weight:600;
-  cursor:pointer;border:1px solid var(--border);transition:all .3s;
-}
+.btn-secondary{display:inline-flex;align-items:center;gap:.5rem;padding:.6rem 1.5rem;border-radius:.75rem;background:rgba(255,255,255,.04);color:var(--fg);font-weight:600;cursor:pointer;border:1px solid var(--border);transition:all .3s;}
 .btn-secondary:hover{background:rgba(255,255,255,.08)}
 
-.streak-counter{
-  font-size:1.2rem;font-weight:700;background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent;
-}
-
-.xp-bar{
-  width:100%;height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden;margin-top:.5rem;
-}
-.xp-fill{
-  height:100%;background:var(--grad-primary);transition:width .5s ease;
-}
+.xp-bar{width:100%;height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden;margin-top:.5rem;}
+.xp-fill{height:100%;background:var(--grad-primary);transition:width .5s ease;}
 </style>
 </head>
 <body class="min-h-screen">
@@ -199,7 +153,7 @@ img{display:block;max-width:100%}
         </button>
       </div>
       <div class="mt-8 flex items-center gap-6 text-sm" style="color:var(--muted)">
-        <div><span class="text-white font-semibold" id="activeUsers">+12k</span> <span data-t="hero.stat1"></span></div>
+        <div><span class="text-white font-semibold">+12k</span> <span data-t="hero.stat1"></span></div>
         <div><span class="text-white font-semibold">4.9★</span> <span data-t="hero.stat2"></span></div>
         <div class="hidden sm:block"><span class="text-white font-semibold" data-t="hero.stat3a"></span> <span data-t="hero.stat3b"></span></div>
       </div>
@@ -223,12 +177,12 @@ img{display:block;max-width:100%}
         </div>
         <div>
           <div class="text-xs" style="color:var(--muted)" data-t="hero.pron"></div>
-          <div class="text-sm font-semibold" id="pronounciationScore">98% perfeita</div>
+          <div class="text-sm font-semibold">98% perfeita</div>
         </div>
       </div>
       <div class="absolute -top-6 -right-6 glass rounded-2xl p-4 hidden sm:block">
         <div class="text-xs" style="color:var(--muted)" data-t="hero.streak"></div>
-        <div class="text-2xl font-bold text-gradient" id="streakCounter">14 dias 🔥</div>
+        <div class="text-2xl font-bold text-gradient">14 dias 🔥</div>
       </div>
     </div>
   </div>
@@ -464,8 +418,8 @@ img{display:block;max-width:100%}
     
     <div class="p-6 space-y-4">
       <div id="loginForm">
-        <input type="email" id="loginEmail" placeholder="Email" class="form-input mb-3" data-t-placeholder="auth.email" />
-        <input type="password" id="loginPassword" placeholder="Senha" class="form-input mb-4" data-t-placeholder="auth.password" />
+        <input type="email" id="loginEmail" placeholder="Email" class="form-input mb-3" />
+        <input type="password" id="loginPassword" placeholder="Senha" class="form-input mb-4" />
         <button onclick="handleLogin()" class="w-full btn-primary" data-t="auth.login"></button>
         <p class="text-sm text-center mt-4" style="color:var(--muted)">
           <span data-t="auth.noAccount"></span>
@@ -474,10 +428,10 @@ img{display:block;max-width:100%}
       </div>
 
       <div id="signupForm" class="hidden">
-        <input type="text" id="signupName" placeholder="Nome completo" class="form-input mb-3" data-t-placeholder="auth.name" />
-        <input type="email" id="signupEmail" placeholder="Email" class="form-input mb-3" data-t-placeholder="auth.email" />
-        <input type="password" id="signupPassword" placeholder="Senha" class="form-input mb-3" data-t-placeholder="auth.password" />
-        <input type="password" id="signupConfirm" placeholder="Confirmar senha" class="form-input mb-4" data-t-placeholder="auth.confirm" />
+        <input type="text" id="signupName" placeholder="Nome completo" class="form-input mb-3" />
+        <input type="email" id="signupEmail" placeholder="Email" class="form-input mb-3" />
+        <input type="password" id="signupPassword" placeholder="Senha" class="form-input mb-3" />
+        <input type="password" id="signupConfirm" placeholder="Confirmar senha" class="form-input mb-4" />
         <button onclick="handleSignupSubmit()" class="w-full btn-primary" data-t="auth.createAccount"></button>
         <p class="text-sm text-center mt-4" style="color:var(--muted)">
           <span data-t="auth.haveAccount"></span>
@@ -586,111 +540,23 @@ img{display:block;max-width:100%}
 <script src="https://cdn.jsdelivr.net/npm/google-generative-ai@0.3.0/dist/index.min.js"></script>
 
 <script>
-/* ── Dictionary ─────────────────────────────────────────────── */
 const dict = {
-  "nav.features":["Recursos","Features"],"nav.scenarios":["Cenários","Scenarios"],
-  "nav.avatar":["Avatar IA","AI Avatar"],"nav.pricing":["Planos","Pricing"],
-  "nav.signup":["Começar grátis","Start free"],
-  "hero.badge":["IA conversacional · Feito para brasileiros","Conversational AI · Built for learners"],
-  "hero.title1":["Aprenda inglês","Learn English"],"hero.title2":["conversando com sua","by chatting with your"],
-  "hero.title3":["IA tutora","AI tutor"],
-  "hero.desc":["Pratique diálogos reais, receba correções instantâneas e melhore sua pronúncia com reconhecimento de voz. Um professor particular disponível 24h por dia.",
-               "Practice real dialogues, get instant corrections and improve your pronunciation with voice recognition. A private teacher available 24/7."],
-  "hero.cta":["Começar grátis hoje","Start free today"],
-  "hero.demo":["Criar meu avatar","Create my avatar"],
-  "hero.stat1":["alunos ativos","active students"],"hero.stat2":["avaliação média","average rating"],
-  "hero.stat3a":["1º dia","Day 1"],"hero.stat3b":["grátis","free"],
-  "hero.pron":["Pronúncia","Pronunciation"],"hero.pronVal":["98% perfeita","98% perfect"],
-  "hero.streak":["Streak","Streak"],"hero.streakVal":["14 dias 🔥","14 days 🔥"],
-  "hero.uploadHint":["Trocar foto do avatar","Change avatar photo"],
-  "feat.h1":["Tudo o que você precisa para","Everything you need to"],
-  "feat.h2":["falar inglês de verdade","truly speak English"],
-  "feat.sub":["Uma plataforma premium que une IA, prática real e gamificação.","A premium platform combining AI, real practice and gamification."],
-  "feat.1t":["IA adaptativa","Adaptive AI"],"feat.1d":["Aprende com você e ajusta dificuldade em tempo real.","Learns from you and adjusts difficulty in real time."],
-  "feat.2t":["Voz e pronúncia","Voice & pronunciation"],"feat.2d":["Reconhecimento de voz com feedback de fluência (US/UK).","Voice recognition with fluency feedback (US/UK)."],
-  "feat.3t":["Diálogos reais","Real dialogues"],"feat.3d":["Entrevistas, viagens, reuniões e cotidiano em inglês natural.","Interviews, travel, meetings in natural English."],
-  "feat.4t":["Gamificação","Gamification"],"feat.4d":["XP, níveis, conquistas e streaks diários.","XP, levels, achievements and daily streaks."],
-  "feat.5t":["Metas pessoais","Personal goals"],"feat.5d":["Defina objetivos e acompanhe seu progresso.","Set goals and track your progress."],
-  "feat.6t":["Correção instantânea","Instant correction"],"feat.6d":["Erros corrigidos na hora com explicações simples.","Mistakes fixed instantly with simple explanations."],
-  "scn.h1":["Pratique","Practice"],"scn.h2":["cenários reais","real scenarios"],
-  "scn.sub":["Mais de 60 simulações imersivas com níveis progressivos.","Over 60 immersive simulations with progressive levels."],
-  "av.badge":["Novo · Avatar IA personalizado","New · Personalized AI Avatar"],
-  "av.h1":["Seu próprio","Your own"],"av.h2":["professor virtual","virtual teacher"],"av.h3":["com a sua cara","with your face"],
-  "av.desc":["Faça upload de uma foto e crie um avatar que conversa, ensina pronúncia e corrige erros em tempo real.",
-             "Upload a photo and create an avatar that talks, teaches pronunciation and corrects you in real time."],
-  "av.s1t":["1. Upload","1. Upload"],"av.s1d":["Selfie ou imagem","Selfie or image"],
-  "av.s2t":["2. Estilize","2. Customize"],"av.s2d":["Voz e personalidade","Voice and personality"],
-  "av.s3t":["3. Converse","3. Chat"],"av.s3d":["Aulas em tempo real","Real-time lessons"],
-  "av.uploadLabel":["Sua foto de avatar","Your avatar photo"],
-  "av.dropTitle":["Arraste sua foto aqui","Drag your photo here"],
-  "av.dropSub":["PNG, JPG ou WEBP · Máx. 10 MB","PNG, JPG or WEBP · Max 10 MB"],
-  "av.or":["ou","or"],
-  "av.browseBtn":["Escolher arquivo","Choose file"],
-  "av.readyBadge":["Avatar pronto ✓","Avatar ready ✓"],
-  "av.removeBtn":["Remover foto","Remove photo"],
-  "av.chatBtn":["Iniciar conversa","Start chatting"],
-  "av.cta":["Criar meu avatar","Create my avatar"],
-  "av.privacy":["Imagens processadas localmente · LGPD/GDPR","Images processed locally · LGPD/GDPR"],
-  "av.speaking":["Falando agora…","Speaking now…"],
-  "av.tutorName":["Seu Tutor IA","Your AI Tutor"],
-  "av.inputPlaceholder":["Digite em inglês…","Type in English…"],
-  "av.modalDisclaimer":["Conversa demonstrativa · respostas com IA","Demo conversation · AI-powered responses"],
-  "pr.h1":["Um plano.","One plan."],"pr.h2":["Tudo incluso.","Everything included."],
-  "pr.sub":["Comece com 1 dia grátis. Depois, €10/mês.","Start with 1 day free. Then €10/month."],
-  "pr.trial":["Teste","Trial"],"pr.trialPeriod":["/ 1º dia","/ day 1"],
-  "pr.trialDesc":["Conheça a plataforma sem compromisso por 24h.","Try the platform free for 24 hours."],
-  "pr.trialCta":["Criar conta grátis","Create free account"],
-  "pr.popular":["Mais popular","Most popular"],"pr.premium":["Premium","Premium"],
-  "pr.month":["/ mês","/ month"],
-  "pr.premDesc":["Acesso completo e ilimitado. Cancele quando quiser.","Full unlimited access. Cancel anytime."],
-  "pr.cta":["Assinar Premium","Subscribe to Premium"],
-  "pr.p1":["Conversas ilimitadas com a IA","Unlimited AI conversations"],
-  "pr.p2":["Reconhecimento de voz (US/UK)","Voice recognition (US/UK)"],
-  "pr.p3":["Mais de 60 cenários reais","Over 60 real scenarios"],
-  "pr.p4":["Correções gramaticais instantâneas","Instant grammar corrections"],
-  "pr.p5":["Sistema de XP e conquistas","XP & achievements"],
-  "pr.p6":["Dashboard de progresso","Progress dashboard"],
-  "pr.p7":["Cancele quando quiser","Cancel anytime"],
-  "ft.tagline":["Aprenda inglês com IA.","Learn English with AI."],
-  "ft.privacy":["Privacidade","Privacy"],"ft.terms":["Termos","Terms"],"ft.contact":["Contato","Contact"],
-  "auth.title":["Bem-vindo ao LingvaAI","Welcome to LingvaAI"],
-  "auth.login":["Entrar","Sign In"],
-  "auth.signup":["Criar conta","Create Account"],
-  "auth.email":["Email","Email"],
-  "auth.password":["Senha","Password"],
-  "auth.name":["Nome completo","Full Name"],
-  "auth.confirm":["Confirmar senha","Confirm Password"],
-  "auth.createAccount":["Criar Conta","Create Account"],
-  "auth.noAccount":["Não tem conta? ","Don't have an account? "],
-  "auth.haveAccount":["Já tem conta? ","Already have an account? "],
-  "user.profile":["Meu Perfil","My Profile"],
-  "user.stats":["Estatísticas","Statistics"],
-  "user.logout":["Sair","Logout"],
-  "user.totalXP":["Total XP:","Total XP:"],
-  "user.streak":["Streak:","Streak:"],
-  "user.level":["Nível:","Level:"],
-  "common.close":["Fechar","Close"],
+  "nav.features":["Recursos","Features"],"nav.scenarios":["Cenários","Scenarios"],"nav.avatar":["Avatar IA","AI Avatar"],"nav.pricing":["Planos","Pricing"],"nav.signup":["Começar grátis","Start free"],"hero.badge":["IA conversacional · Feito para brasileiros","Conversational AI · Built for learners"],"hero.title1":["Aprenda inglês","Learn English"],"hero.title2":["conversando com sua","by chatting with your"],"hero.title3":["IA tutora","AI tutor"],"hero.desc":["Pratique diálogos reais, receba correções instantâneas e melhore sua pronúncia com reconhecimento de voz. Um professor particular disponível 24h por dia.","Practice real dialogues, get instant corrections and improve your pronunciation with voice recognition. A private teacher available 24/7."],"hero.cta":["Começar grátis hoje","Start free today"],"hero.demo":["Criar meu avatar","Create my avatar"],"hero.stat1":["alunos ativos","active students"],"hero.stat2":["avaliação média","average rating"],"hero.stat3a":["1º dia","Day 1"],"hero.stat3b":["grátis","free"],"hero.pron":["Pronúncia","Pronunciation"],"hero.streak":["Streak","Streak"],"hero.uploadHint":["Trocar foto do avatar","Change avatar photo"],"feat.h1":["Tudo o que você precisa para","Everything you need to"],"feat.h2":["falar inglês de verdade","truly speak English"],"feat.sub":["Uma plataforma premium que une IA, prática real e gamificação.","A premium platform combining AI, real practice and gamification."],"feat.1t":["IA adaptativa","Adaptive AI"],"feat.1d":["Aprende com você e ajusta dificuldade em tempo real.","Learns from you and adjusts difficulty in real time."],"feat.2t":["Voz e pronúncia","Voice & pronunciation"],"feat.2d":["Reconhecimento de voz com feedback de fluência (US/UK).","Voice recognition with fluency feedback (US/UK)."],"feat.3t":["Diálogos reais","Real dialogues"],"feat.3d":["Entrevistas, viagens, reuniões e cotidiano em inglês natural.","Interviews, travel, meetings in natural English."],"feat.4t":["Gamificação","Gamification"],"feat.4d":["XP, níveis, conquistas e streaks diários.","XP, levels, achievements and daily streaks."],"feat.5t":["Metas pessoais","Personal goals"],"feat.5d":["Defina objetivos e acompanhe seu progresso.","Set goals and track your progress."],"feat.6t":["Correção instantânea","Instant correction"],"feat.6d":["Erros corrigidos na hora com explicações simples.","Mistakes fixed instantly with simple explanations."],"scn.h1":["Pratique","Practice"],"scn.h2":["cenários reais","real scenarios"],"scn.sub":["Mais de 60 simulações imersivas com níveis progressivos.","Over 60 immersive simulations with progressive levels."],"av.badge":["Novo · Avatar IA personalizado","New · Personalized AI Avatar"],"av.h1":["Seu próprio","Your own"],"av.h2":["professor virtual","virtual teacher"],"av.h3":["com a sua cara","with your face"],"av.desc":["Faça upload de uma foto e crie um avatar que conversa, ensina pronúncia e corrige erros em tempo real.","Upload a photo and create an avatar that talks, teaches pronunciation and corrects you in real time."],"av.s1t":["1. Upload","1. Upload"],"av.s1d":["Selfie ou imagem","Selfie or image"],"av.s2t":["2. Estilize","2. Customize"],"av.s2d":["Voz e personalidade","Voice and personality"],"av.s3t":["3. Converse","3. Chat"],"av.s3d":["Aulas em tempo real","Real-time lessons"],"av.uploadLabel":["Sua foto de avatar","Your avatar photo"],"av.dropTitle":["Arraste sua foto aqui","Drag your photo here"],"av.dropSub":["PNG, JPG ou WEBP · Máx. 10 MB","PNG, JPG or WEBP · Max 10 MB"],"av.or":["ou","or"],"av.browseBtn":["Escolher arquivo","Choose file"],"av.readyBadge":["Avatar pronto ✓","Avatar ready ✓"],"av.removeBtn":["Remover foto","Remove photo"],"av.chatBtn":["Iniciar conversa","Start chatting"],"av.privacy":["Imagens processadas localmente · LGPD/GDPR","Images processed locally · LGPD/GDPR"],"av.speaking":["Falando agora…","Speaking now…"],"av.tutorName":["Seu Tutor IA","Your AI Tutor"],"av.modalDisclaimer":["Conversa demonstrativa · respostas com IA","Demo conversation · AI-powered responses"],"pr.h1":["Um plano.","One plan."],"pr.h2":["Tudo incluso.","Everything included."],"pr.sub":["Comece com 1 dia grátis. Depois, €10/mês.","Start with 1 day free. Then €10/month."],"pr.trial":["Teste","Trial"],"pr.trialPeriod":["/ 1º dia","/ day 1"],"pr.trialDesc":["Conheça a plataforma sem compromisso por 24h.","Try the platform free for 24 hours."],"pr.trialCta":["Criar conta grátis","Create free account"],"pr.popular":["Mais popular","Most popular"],"pr.premium":["Premium","Premium"],"pr.month":["/ mês","/ month"],"pr.premDesc":["Acesso completo e ilimitado. Cancele quando quiser.","Full unlimited access. Cancel anytime."],"pr.cta":["Assinar Premium","Subscribe to Premium"],"pr.p1":["Conversas ilimitadas com a IA","Unlimited AI conversations"],"pr.p2":["Reconhecimento de voz (US/UK)","Voice recognition (US/UK)"],"pr.p3":["Mais de 60 cenários reais","Over 60 real scenarios"],"pr.p4":["Correções gramaticais instantâneas","Instant grammar corrections"],"pr.p5":["Sistema de XP e conquistas","XP & achievements"],"pr.p6":["Dashboard de progresso","Progress dashboard"],"pr.p7":["Cancele quando quiser","Cancel anytime"],"ft.tagline":["Aprenda inglês com IA.","Learn English with AI."],"ft.privacy":["Privacidade","Privacy"],"ft.terms":["Termos","Terms"],"ft.contact":["Contato","Contact"],"auth.title":["Bem-vindo ao LingvaAI","Welcome to LingvaAI"],"auth.login":["Entrar","Sign In"],"auth.signup":["Criar conta","Create Account"],"auth.email":["Email","Email"],"auth.password":["Senha","Password"],"auth.name":["Nome completo","Full Name"],"auth.confirm":["Confirmar senha","Confirm Password"],"auth.createAccount":["Criar Conta","Create Account"],"auth.noAccount":["Não tem conta? ","Don't have an account? "],"auth.haveAccount":["Já tem conta? ","Already have an account? "],"user.profile":["Meu Perfil","My Profile"],"user.stats":["Estatísticas","Statistics"],"user.logout":["Sair","Logout"],"user.totalXP":["Total XP:","Total XP:"],"user.streak":["Streak:","Streak:"],"user.level":["Nível:","Level:"],"common.close":["Fechar","Close"],
 };
 
 const features=[["brain","feat.1t","feat.1d"],["mic-2","feat.2t","feat.2d"],["messages-square","feat.3t","feat.3d"],["trophy","feat.4t","feat.4d"],["target","feat.5t","feat.5d"],["zap","feat.6t","feat.6d"]];
 const scenarios={"Trabalho|Work":["Entrevista|Job interview","Reunião|Meeting","Apresentação|Presentation","Negociação|Negotiation"],"Viagem|Travel":["Aeroporto|Airport","Hotel|Hotel","Restaurante|Restaurant","Imigração|Immigration"],"Cotidiano|Daily":["Supermercado|Supermarket","Médico|Doctor","Amigos|Friends","Compras|Shopping"],"Estudos|Studies":["Faculdade|College","Intercâmbio|Exchange","Acadêmico|Academic","Apresentações|Presentations"]};
 
-/* ── User State ─────────────────────────────────────────────── */
 let currentUser = null;
-let currentSession = null;
 let avatarDataURL = null;
 let lang = "pt";
-let botIdx = 0, modalBotIdx = 0;
 let isRecording = false;
 let recognitionSupported = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
-/* ── Initialize ─────────────────────────────────────────────── */
 try { lang = localStorage.getItem("lingvaai-lang") || "pt"; } catch(e) {}
 const li = () => lang === "pt" ? 0 : 1;
 
-/* ── API Configuration ─────────────────────────────────────────────── */
-// Replace with your actual Gemini API key
 const GEMINI_API_KEY = "AIzaSyDXAiKKqI5J5dUmJ_rFqZf1-KQyBKQg3yM";
 let genAI = null;
 
@@ -699,12 +565,11 @@ async function initializeGemini() {
     try {
       genAI = new (window.GoogleGenerativeAI || class {})(GEMINI_API_KEY);
     } catch(e) {
-      console.log("Gemini not available, using fallback");
+      console.log("Gemini not available");
     }
   }
 }
 
-/* ── Authentication ─────────────────────────────────────────────── */
 async function handleLogin() {
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value.trim();
@@ -837,7 +702,6 @@ function checkAuthAndOpenModal() {
   }
 }
 
-/* ── Gemini AI Chat ─────────────────────────────────────────────── */
 async function getAIResponse(userMessage) {
   try {
     await initializeGemini();
@@ -849,20 +713,8 @@ async function getAIResponse(userMessage) {
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
     
     const systemPrompt = lang === 'pt' 
-      ? `Você é um professor de inglês amigável e entusiasmado. Seu objetivo é ajudar o aluno a praticar e melhorar seu inglês através de conversas. 
-         - Se o usuário escrever em português, responda em português e dê a tradução/correção em inglês
-         - Se escrever em inglês, corrija erros gramaticais de forma construtiva
-         - Sempre seja encorajador e ofereça dicas de pronúncia
-         - Use emojis para deixar mais amigável
-         - Mantenha respostas curtas (1-3 linhas)
-         - Quando apropriado, elogie e motive o aprendizado`
-      : `You are a friendly and enthusiastic English teacher. Your goal is to help the student practice and improve their English through conversations.
-         - If the user writes in Portuguese, respond in Portuguese and provide the translation/correction in English
-         - If they write in English, correct grammatical errors constructively
-         - Always be encouraging and offer pronunciation tips
-         - Use emojis to make it friendlier
-         - Keep responses short (1-3 lines)
-         - When appropriate, praise and motivate learning`;
+      ? `Você é um professor de inglês amigável e entusiasmado. Seu objetivo é ajudar o aluno a praticar e melhorar seu inglês através de conversas. Se o usuário escrever em português, responda em português e dê a tradução/correção em inglês. Se escrever em inglês, corrija erros gramaticais de forma construtiva. Sempre seja encorajador e ofereça dicas de pronúncia. Use emojis para deixar mais amigável. Mantenha respostas curtas (1-3 linhas). Quando apropriado, elogie e motive o aprendizado`
+      : `You are a friendly and enthusiastic English teacher. Your goal is to help the student practice and improve their English through conversations. If the user writes in Portuguese, respond in Portuguese and provide the translation/correction in English. If they write in English, correct grammatical errors constructively. Always be encouraging and offer pronunciation tips. Use emojis to make it friendlier. Keep responses short (1-3 lines). When appropriate, praise and motivate learning`;
 
     const response = await model.generateContent(systemPrompt + "\n\nUser: " + userMessage);
     return response.response.text();
@@ -896,7 +748,6 @@ function getFallbackResponse(userMessage) {
   return responses[langKey][Math.floor(Math.random() * responses[langKey].length)];
 }
 
-/* ── Chat Functions ─────────────────────────────────────────────── */
 function initChatDemo() {
   const c = document.getElementById("chatMessages");
   c.innerHTML = "";
@@ -971,7 +822,6 @@ function addXP(amount) {
   updateStats();
 }
 
-/* ── Voice Recognition ─────────────────────────────────────────────── */
 function toggleMic() {
   if (!recognitionSupported) {
     alert(lang === 'pt' ? 'Reconhecimento de voz não suportado no seu navegador' : 'Speech recognition not supported');
@@ -1037,7 +887,6 @@ function toggleModalMic() {
   recognition.start();
 }
 
-/* ── Text-to-Speech ─────────────────────────────────────────────── */
 function speakText(text) {
   if ('speechSynthesis' in window) {
     speechSynthesis.cancel();
@@ -1048,7 +897,6 @@ function speakText(text) {
   }
 }
 
-/* ── Avatar Upload ─────────────────────────────────────────────── */
 const DEFAULT_SRC = "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=200&q=80";
 
 function handleFileSelect(e) {
@@ -1124,7 +972,6 @@ function clearAvatar() {
   if (window.lucide) lucide.createIcons();
 }
 
-/* ── Modal Functions ─────────────────────────────────────────────── */
 function openAuthModal() {
   document.getElementById("authModal").classList.add("open");
   document.body.style.overflow = "hidden";
@@ -1209,7 +1056,6 @@ document.addEventListener("keydown", e => {
   }
 });
 
-/* ── Language ───────────────────────────────────────────────── */
 function applyLang() {
   document.documentElement.lang = lang === "pt" ? "pt-BR" : "en";
   document.getElementById("langLabel").textContent = lang.toUpperCase();
@@ -1219,15 +1065,10 @@ function applyLang() {
     if (dict[k]) el.textContent = dict[k][li()];
   });
 
-  document.querySelectorAll("[data-t-placeholder]").forEach(el => {
-    const k = el.getAttribute("data-t-placeholder");
-    if (dict[k]) el.placeholder = dict[k][li()];
-  });
-
   const ci = document.getElementById("chatInput");
-  if (ci) ci.placeholder = dict["av.inputPlaceholder"][li()];
+  if (ci) ci.placeholder = dict["av.inputPlaceholder"] ? dict["av.inputPlaceholder"][li()] : "Digite...";
   const mi = document.getElementById("modalInput");
-  if (mi) mi.placeholder = dict["av.inputPlaceholder"][li()];
+  if (mi) mi.placeholder = dict["av.inputPlaceholder"] ? dict["av.inputPlaceholder"][li()] : "Digite...";
 
   const fg = document.getElementById("featureGrid");
   fg.innerHTML = "";
@@ -1258,15 +1099,11 @@ function applyLang() {
 function toggleLang() {
   lang = lang === "pt" ? "en" : "pt";
   try { localStorage.setItem("lingvaai-lang", lang); } catch (e) { }
-  botIdx = 0;
-  modalBotIdx = 0;
   applyLang();
 }
 
-/* ── Init ───────────────────────────────────────────────────── */
 document.getElementById("yr").textContent = new Date().getFullYear();
 
-// Check if user is logged in
 try {
   const savedUser = localStorage.getItem('lingvaai_user');
   if (savedUser) {
@@ -1278,7 +1115,6 @@ try {
 initializeGemini();
 applyLang();
 
-// Close dropdown when clicking outside
 document.addEventListener('click', function(event) {
   const dropdown = document.getElementById('userDropdown');
   const userMenuBtn = document.getElementById('userMenuBtn');
