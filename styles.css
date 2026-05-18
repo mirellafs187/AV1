@@ -1,0 +1,126 @@
+/* ============================================================
+   englishavatar — styles.css
+   Mirrors the Tailwind CSS design tokens used in __root.tsx
+   ============================================================ */
+
+/* ---------- Design Tokens (CSS Variables) ---------- */
+:root {
+  /* Colors */
+  --background:        #ffffff;
+  --foreground:        #09090b;
+  --muted-foreground:  #71717a;
+  --primary:           #18181b;
+  --primary-foreground:#fafafa;
+  --accent:            #f4f4f5;
+  --input:             #e4e4e7;
+  --border:            #e4e4e7;
+
+  /* Typography */
+  --font-body:   'Inter', sans-serif;
+  --font-display:'Sora', sans-serif;
+
+  /* Spacing / Radii */
+  --radius: 0.375rem; /* rounded-md */
+}
+
+/* ---------- Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; }
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ---------- Utility: hidden ---------- */
+.hidden { display: none !important; }
+
+/* ---------- Page Shell ---------- */
+.page {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background);
+  padding: 1rem;
+}
+
+/* ---------- Center Container ---------- */
+.center-container {
+  max-width: 28rem;       /* max-w-md */
+  text-align: center;
+}
+
+/* ---------- Typography ---------- */
+.code-404 {
+  font-family: var(--font-display);
+  font-size: 4.5rem;      /* text-7xl */
+  font-weight: 700;
+  line-height: 1;
+  color: var(--foreground);
+}
+
+.heading-md {
+  font-family: var(--font-display);
+  font-size: 1.25rem;     /* text-xl */
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--foreground);
+}
+
+.heading-sm {
+  font-size: 1.25rem;     /* text-xl */
+  font-weight: 600;
+  color: var(--foreground);
+  margin-top: 1rem;       /* mt-4 */
+}
+
+.muted {
+  margin-top: 0.5rem;     /* mt-2 */
+  font-size: 0.875rem;    /* text-sm */
+  color: var(--muted-foreground);
+}
+
+/* ---------- Action Row ---------- */
+.actions {
+  margin-top: 1.5rem;     /* mt-6 */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  padding: 0.5rem 1rem;   /* px-4 py-2 */
+  font-size: 0.875rem;    /* text-sm */
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+  font-family: var(--font-body);
+}
+
+/* Primary — dark fill */
+.btn-primary {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+.btn-primary:hover { opacity: 0.88; }
+
+/* Outline — bordered */
+.btn-outline {
+  background-color: var(--background);
+  color: var(--foreground);
+  border: 1px solid var(--input);
+}
+.btn-outline:hover { background-color: var(--accent); }
